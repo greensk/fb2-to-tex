@@ -1,14 +1,22 @@
 # * codig: utf8 *
 class TexWriter:
+    def __init__(self):
+        self.paperwidth = 10.0
+        self.paperheight = 7.0
+        
+        self.lmargin = 0.3
+        self.rmargin = 0.3
+        self.bmargin = 0.3
+        self.tmargin = 0.3
+        
+        self.lang = None
     def start(self):
         print("""
 \\documentclass[oneside]{book}
-
-\\usepackage[paperheight=7cm,paperwidth=10cm,margin=0.3cm,tmargin=0.1cm,heightrounded]{geometry}
-
+\\usepackage[paperheight=%fcm,paperwidth=%fcm,tmargin=%fcm,rmargin=%fcm,bmargin=%fcm,lmargin=%fcm,heightrounded]{geometry}
 \\usepackage[utf8]{inputenc}
 
-\\usepackage[russian]{babel}
+%s
 \\usepackage{indentfirst}
 \\usepackage{misccorr}
 
@@ -19,9 +27,17 @@ class TexWriter:
 
 \\sloppy
 
-\\usepackage{atbegshi}% http://ctan.org/pkg/atbegshi
+\\usepackage{atbegshi}%% http://ctan.org/pkg/atbegshi
 \\AtBeginDocument{\AtBeginShipoutNext{\AtBeginShipoutDiscard}}
-        """)
+        """ % (
+            self.paperwidth,
+            self.paperheight,
+            self.tmargin,
+            self.rmargin,
+            self.bmargin,
+            self.lmargin,
+            ('\\usepackage[%s]{babel}' % self.lang) if self.lang != None else ''
+        ))
 
     def meta(self, title, author):
         print("\\begin{document}")
