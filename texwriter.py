@@ -10,6 +10,8 @@ class TexWriter:
         self.tmargin = 0.3
         
         self.lang = None
+        
+        self.titles = ['part', 'chapter', 'section', 'subsection', 'subsubsection', 'paragraph', 'subparagraph']
     def start(self):
         print("""
 \\documentclass[oneside]{book}
@@ -46,8 +48,8 @@ class TexWriter:
         print("\\begin{document}")
         print("\\maketitle\n")
         
-    def section(self, title):
-        print("\\section{%s}" % self.encode(title))
+    def section(self, title, level = 0):
+        print("\\%s{%s}" % (self.titles[level], self.encode(title)))
         
     def text(self, content):
         print("%s\n" % self.encode(content));
@@ -57,7 +59,7 @@ class TexWriter:
         
     def encode(self, text):
         escapeDict = {
-            "\\": "$\\backslash$",
+            "\\": "\\textbackslash",
             "{": "\\{",
             "}": "\\}",
             "&": "\\&",

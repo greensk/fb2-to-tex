@@ -53,17 +53,24 @@ class Fb2Reader:
         
     def processBody(self, titleCallback, textCallback):
         for element in self.getXpathSubElements('/fb:FictionBook/fb:body/fb:section'):
-            titleContent = []
-            titleElement = element.find('fb:title', namespaces=namespaces)
-            if titleElement is not None:
-                if titleElement.text is not None:
-                    titleContent.append(titleElement.text)
-                for paragraph in titleElement.findall('fb:p', namespaces=namespaces):
+            self.processSection(element, titleCallback, textCallback, 0)
+    
+    def processSection(self, element, titleCallback, textCallback, level):
+        titleContent = []
+        titleElement = element.find('fb:title', namespaces=namespaces)
+        if titleElement is not None:
+            if titleElement.text is not None:
+                titleContent.append(titleElement.text)
+            for paragraph in titleElement.findall('fb:p', namespaces=namespaces):
+                if paragraph.text is not None:
                     titleContent.append(paragraph.text)
-            titleCallback(' '.join(titleContent))
-            for paragraph in element.findall('fb:p', namespaces=namespaces):
-                text = paragraph.text
+        titleCallback(' '.join(titleContent), level)
+        for paragraph in element.findall('fb:p', namespaces=namespaces):
+            text = paragraph.text
+            if text is not None:
                 textCallback(paragraph.text)
+        for subsection in element.findall('fb:section', namespaces=namespaces):
+            self.processSection(subsection, titleCallback, textCallback, level + 1)
 
     def getFileContent(self):
         if (self.zip):
