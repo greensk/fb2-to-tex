@@ -23,7 +23,7 @@ argsValues = vars(args)
 inputFile = sys.argv[1]
 
 from fb2reader import Fb2Reader
-from converter import Converter
+from converter2 import Converter
 from texwriter import TexWriter
 
 fb = Fb2Reader(inputFile)
@@ -49,8 +49,8 @@ if outputFilename != '-':
     output = open(outputFilename, 'w')
     sys.stdout = output
 
-parser = etree.XMLParser(target = Converter(tex))
-result = etree.XML(fb.getFileContent(), parser)
+converter = Converter(fb, tex)
+converter.run()
 
 if output:
     output.close()

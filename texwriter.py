@@ -39,12 +39,12 @@ class TexWriter:
             ('\\usepackage[%s]{babel}' % self.lang) if self.lang != None else ''
         ))
 
-    def meta(self, title, author):
-        print("\\begin{document}")
-        print("\\author{%s}" % self.encode(author))
+    def meta(self, title, authors, date):
+        print("\\author{%s}" % '\\and'.join(map(lambda author: self.encode(author), authors)))
         print("\\title{%s}" % self.encode(title))
-        print("\\date{2018}")
-        print("\\maketitle")
+        print("\\date{%s}" % self.encode(date))
+        print("\\begin{document}")
+        print("\\maketitle\n")
         
     def section(self, title):
         print("\\section{%s}" % self.encode(title))
