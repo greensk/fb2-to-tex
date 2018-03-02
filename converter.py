@@ -8,6 +8,7 @@ class Converter:
         self._content = ''
         self._context = 'root'
         self._started = False
+        self._title = []
 
     def run(self):
         stream = self._source.getContentStream()
@@ -46,12 +47,11 @@ class Converter:
             self._dest.text(self._content)
             self._content = ''
         elif tag == '{http://www.gribuser.ru/xml/fictionbook/2.0}title':
-            if self._context == 'section-title':
+            if self._context == 'section-title' and self._content.strip() != '':
                 self._dest.section(self._content)
                 self._content = ''
                 self._context = 'text'
     def data(self, data):
-        # if self._context == 'text':
         self._content += data
     def comment(self, text):
         pass

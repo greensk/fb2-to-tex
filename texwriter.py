@@ -50,11 +50,25 @@ class TexWriter:
         print("\\section{%s}" % self.encode(title))
         
     def text(self, content):
-        print("%s\n" % content);
+        print("%s\n" % self.encode(content));
 
     def end(self):
         print("\\end{document}")
         
     def encode(self, text):
-        # temporary solition
-        return text.replace("\\", "").replace("{", "").replace("}", "")
+        escapeDict = {
+            "\\": "$\\backslash$",
+            "{": "\\{",
+            "}": "\\}",
+            "&": "\\&",
+            "%": "\\%",
+            "$": "\\$",
+            "#": "\\#",
+            "_": "\\_",
+            "~": "\\texttt{\\~{}}",
+            "^": "\^{}"
+        }
+        for src in escapeDict:
+            text = text.replace(src, escapeDict[src])
+        return text
+        # return text.replace("\\", "").replace("{", "").replace("}", "")
