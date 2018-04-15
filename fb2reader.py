@@ -65,12 +65,23 @@ class Fb2Reader:
                 if paragraph.text is not None:
                     titleContent.append(paragraph.text)
         titleCallback(' '.join(titleContent), level)
-        for paragraph in element.findall('fb:p', namespaces=namespaces):
+        self.processSectionContent(element.findall('fb:p', namespaces=namespaces), textCallback)
+        #for paragraph in element.findall('fb:p|fb:cite', namespaces=namespaces):
+        #    text = paragraph.text
+        #    if text is not None:
+        #        textCallback(paragraph.text, paragraph.tag)
+        for subsection in element.findall('fb:section', namespaces=namespaces):
+            self.processSection(subsection, titleCallback, textCallback, level + 1)
+            
+    def processSectionContent(self, elements, textCallback):
+        for paragraph in elements:
             text = paragraph.text
             if text is not None:
                 textCallback(paragraph.text)
-        for subsection in element.findall('fb:section', namespaces=namespaces):
-            self.processSection(subsection, titleCallback, textCallback, level + 1)
+            else:
+                subelements = paragraph.getchildren()
+                if len(subelements) > 0:
+                    self.processSectionContent(subelements, textCallback)
 
     def getFileContent(self):
         if (self.zip):

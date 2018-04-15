@@ -58,19 +58,19 @@ class TexWriter:
         print("\\end{document}")
         
     def encode(self, text):
-        escapeDict = {
-            "\\": "\\textbackslash",
-            "{": "\\{",
-            "}": "\\}",
-            "&": "\\&",
-            "%": "\\%",
-            "$": "\\$",
-            "#": "\\#",
-            "_": "\\_",
-            "~": "\\texttt{\\~{}}",
-            "^": "\^{}"
-        }
-        for src in escapeDict:
-            text = text.replace(src, escapeDict[src])
+        # fix order
+        escapeDict = [
+            {'src': "\\", 'replacement': "\\textbackslash"},
+            {'src': "{", 'replacement': "\\{"},
+            {'src': "}", 'replacement': "\\}"},
+            {'src': "&", 'replacement': "{\\&}"},
+            {'src': "%", 'replacement': "\\%"},
+            {'src': "$", 'replacement': "\\$"},
+            {'src': "#", 'replacement': "\\#"},
+            {'src': "_", 'replacement': "\\_"},
+            {'src': "~", 'replacement': "\\texttt{\\~{}}"},
+            {'src': "^", 'replacement': "\^{}"}
+        ]
+        for item in escapeDict:
+            text = text.replace(item['src'], item['replacement'])
         return text
-        # return text.replace("\\", "").replace("{", "").replace("}", "")

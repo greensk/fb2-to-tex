@@ -12,7 +12,7 @@ git clone https://github.com/greensk/fb2-to-tex.git
 ```
 use file `run.py` to conver books to TeX.
 ```
-./run.py --paperwidth=5cm --paperheight=7cm war_and_pease.fb2.zip war_and_prase.tex
+./run.py war_and_pease.fb2.zip war_and_prase.tex --paperwidth=5 --paperheight=7 --lang=russian
 ```
 
 # Book file prepare flow
@@ -30,7 +30,7 @@ sudo apt-get install texlive-lang-cyrillic
 3. Use the utility to prapre your book for a specified screen size.
 4. Convert the output .tex file to PDF using LaTeX command:
 ```
-texi2pdf -c war_and_prase.tex war_and_prase.pdf
+pdflatex war_and_prase.tex
 ```
 5. Load the prepared PDF to your mobile device.
 6. Enjoy a good formatted e-book.
