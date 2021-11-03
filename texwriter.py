@@ -3,14 +3,14 @@ class TexWriter:
     def __init__(self):
         self.paperwidth = 10.0
         self.paperheight = 7.0
-        
+
         self.lmargin = 0.3
         self.rmargin = 0.3
         self.bmargin = 0.3
         self.tmargin = 0.3
-        
+
         self.lang = None
-        
+
         self.titles = ['part', 'chapter', 'section', 'subsection', 'subsubsection', 'paragraph', 'subparagraph']
     def start(self):
         print("""
@@ -47,17 +47,19 @@ class TexWriter:
         print("\\date{%s}" % self.encode(date))
         print("\\begin{document}")
         print("\\maketitle\n")
-        
+
     def section(self, title, level = 0):
-        print("\\%s{%s}" % (self.titles[level], self.encode(title)))
-        
+        print("\\%s{%s}" % (self.titles[level], self.encode(title.strip())))
+
     def text(self, content):
         print("%s\n" % self.encode(content));
 
     def end(self):
         print("\\end{document}")
-        
+
     def encode(self, text):
+        if (text is None):
+            return ""
         # fix order
         escapeDict = [
             {'src': "\\", 'replacement': "\\textbackslash"},
